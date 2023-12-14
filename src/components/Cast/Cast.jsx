@@ -14,7 +14,6 @@ const Cast = () => {
         const {
           data: { cast },
         } = await getMovies(fetchPath);
-        console.log(cast);
         setCast(cast);
       } catch (error) {
         setError(error);

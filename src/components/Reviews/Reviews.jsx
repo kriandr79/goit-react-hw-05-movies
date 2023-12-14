@@ -14,7 +14,6 @@ const Reviews = () => {
         const {
           data: { results },
         } = await getMovies(fetchPath);
-        console.log(results);
         setReviews(results);
       } catch (error) {
         setError(error);
