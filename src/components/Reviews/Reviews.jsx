@@ -1,15 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import getMovies from 'services/api';
-import css from './Reviews.module.css'
+import Loader from 'components/Loader/Loader';
+import css from './Reviews.module.css';
 
 const Reviews = () => {
   const [reviews, setReviews] = useState([]);
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const { movieId } = useParams();
   const fetchPath = `/movie/${movieId}/reviews`; // параметр запиту
 
   useEffect(() => {
+    setIsLoading(true);
+
     const fetchMovies = async () => {
       try {
         const {
@@ -19,17 +23,17 @@ const Reviews = () => {
       } catch (error) {
         setError(error);
       } finally {
-        // можно використати для лоадера
+        setIsLoading(false);
       }
     };
 
     fetchMovies();
   }, [fetchPath]);
 
-  console.log(reviews);
-
   return (
     <>
+      {isLoading && <Loader></Loader>}
+      {error && <div>{error}</div>}
       {reviews.length > 0 ? (
         <div>
           <h2>Reviews:</h2>
@@ -51,7 +55,6 @@ const Reviews = () => {
       ) : (
         <div>There are no reviews for this movie...</div>
       )}
-      {error && <div>{error}</div>}
     </>
   );
 };

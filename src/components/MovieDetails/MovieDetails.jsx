@@ -2,16 +2,19 @@ import { useEffect, useState, Suspense, useRef } from 'react';
 import { useParams, Link, Outlet, useLocation } from 'react-router-dom';
 import getMovies from 'services/api';
 import css from './MovieDetails.module.css';
+import Loader from 'components/Loader/Loader';
 
 const MovieDetails = () => {
   const { state } = useLocation();
   const [movie, setMovie] = useState({});
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const { movieId } = useParams();
   const fetchPath = `/movie/${movieId}`; // параметр запиту
   const backLinkHref = useRef(state?.from ?? '/movies');
 
   useEffect(() => {
+     setIsLoading(true);
     const fetchMovies = async () => {
       try {
         const { data } = await getMovies(fetchPath);
@@ -20,7 +23,7 @@ const MovieDetails = () => {
       } catch (error) {
         setError(error);
       } finally {
-        // можно використати для лоадера
+         setIsLoading(false);
       }
     };
 
@@ -46,6 +49,8 @@ const MovieDetails = () => {
 
   return (
     <>
+      {isLoading && <Loader></Loader>}
+      {error && <div>{error}</div>}
       <Link to={backLinkHref.current} className={css.backlink}>
         &#10229; go back
       </Link>
@@ -100,7 +105,6 @@ const MovieDetails = () => {
       <Suspense fallback={<div>Loading...</div>}>
         <Outlet />
       </Suspense>
-      {error && <div>{error}</div>}
     </>
   );
 };
