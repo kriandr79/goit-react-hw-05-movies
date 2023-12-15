@@ -1,13 +1,15 @@
-import { useEffect, useState, Suspense } from 'react';
-import { useParams, Link, Outlet } from 'react-router-dom';
+import { useEffect, useState, Suspense, useRef } from 'react';
+import { useParams, Link, Outlet, useLocation } from 'react-router-dom';
 import getMovies from 'services/api';
 import css from './MovieDetails.module.css';
 
 const MovieDetails = () => {
+  const { state } = useLocation();
   const [movie, setMovie] = useState({});
   const [error, setError] = useState('');
   const { movieId } = useParams();
-  const fetchPath = `/movie/${movieId}`;
+  const fetchPath = `/movie/${movieId}`; // параметр запиту
+  const backLinkHref = useRef(state?.from ?? '/movies');
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -38,13 +40,22 @@ const MovieDetails = () => {
   } = movie;
 
   const fullPosterPath = `https://image.tmdb.org/t/p/w500/${poster_path}`;
+  const noPosterPath =
+    'https://www.csaff.org/wp-content/uploads/csaff-no-poster.jpg';
   const production_year = new Date(release_date).getFullYear();
 
   return (
     <>
+      <Link to={backLinkHref.current} className={css.backlink}>
+        &#10229; go back
+      </Link>
       <div className={css.moviecontainer}>
         <div>
-          <img src={fullPosterPath} width="200" alt={title} />
+          <img
+            src={poster_path ? fullPosterPath : noPosterPath}
+            width="200"
+            alt={title}
+          />
         </div>
         <div>
           <h1>

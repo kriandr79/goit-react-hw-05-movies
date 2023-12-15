@@ -1,0 +1,21 @@
+.reviewitem {
+    margin-bottom: 16px;
+  
+}
+.author {
+    margin-bottom: 8px;
+      font-weight: 500;
+}
+.content {
+margin-bottom: 8px;
+}
+.source {
+    font-size: 14px;
+    color: grey;
+
+}
+
+.source a:link,
+.source a:visited {
+    color: grey;
+}

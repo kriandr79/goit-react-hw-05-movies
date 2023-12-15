@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import css from './Searchbar.module.css'
+import css from './Searchbar.module.css';
 
 const Searchbar = ({ onSubmit }) => {
   const [query, setQuery] = useState('');
@@ -26,21 +26,22 @@ const Searchbar = ({ onSubmit }) => {
   };
 
   return (
-    <header>
-      <div className={css.headerContainer}>
-        <form onSubmit={handleFormSubmit}>
-          <input
-            type="text"
-            value={query}
-            autoComplete="off"
-            autoFocus
-            onChange={handleInput}
-            placeholder="Search movies"
-          />
-          <button type="submit">Search</button>
-        </form>
-      </div>
-    </header>
+    <div className={css.headerContainer}>
+      <form onSubmit={handleFormSubmit} className={css.form}>
+        <input
+          className={css.input}
+          type="text"
+          value={query}
+          autoComplete="off"
+          autoFocus
+          onChange={handleInput}
+          placeholder="Search movies"
+        />
+        <button type="submit" className={css.button}>
+          Search
+        </button>
+      </form>
+    </div>
   );
 };
 
